@@ -1,110 +1,32 @@
 from selenium import webdriver
-from selenium.webdriver.common.proxy import Proxy
-from selenium.webdriver.common.proxy import ProxyType
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
 
+# Set path to your WebDriver (e.g., chromedriver)
+driver_path = 'path_to_your_chromedriver'
 
-def test_page_load_strategy_normal():
-    options = get_default_chrome_options()
-    options.page_load_strategy = 'normal'
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
+# Open the browser
+driver = webdriver.Chrome(executable_path=driver_path)
 
+# Go to the website URL
+url = "https://hajj.nusuk.sa/package/10ba0000-56b2-0050-812b-08dd6172ab77/booking/6c2f0000-56b2-0050-f4e5-08dd6238bcf5/checkout"
+driver.get(url)
 
-def test_page_load_strategy_eager():
-    options = get_default_chrome_options()
-    options.page_load_strategy = 'eager'
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
+# Wait for the page to load (you can adjust the sleep time or use WebDriverWait for better handling)
+time.sleep(5)
 
+# Locate the "Purchase" button (modify the selector to match the button you need)
+purchase_button = driver.find_element(By.XPATH, '//button[contains(text(), "Purchase")]')
 
-def test_page_load_strategy_none():
-    options = get_default_chrome_options()
-    options.page_load_strategy = 'none'
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
+# Click the purchase button
+purchase_button.click()
 
-def test_timeouts_script():
-    options = get_default_chrome_options()
-    options.timeouts = { 'script': 5000 }
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
+# Optionally, add more steps for filling in payment details, etc. 
+# (if you want to automate more actions, you would need to inspect the page and find the correct elements)
 
-def test_timeouts_page_load():
-    options = get_default_chrome_options()
-    options.timeouts = { 'pageLoad': 5000 }
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
+# Wait for a few seconds to see the action
+time.sleep(10)
 
-def test_timeouts_implicit_wait():
-    options = get_default_chrome_options()
-    options.timeouts = { 'implicit': 5000 }
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
-
-def test_unhandled_prompt():
-    options = get_default_chrome_options()
-    options.unhandled_prompt_behavior = 'accept'
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
-
-def test_set_window_rect():
-    options = webdriver.FirefoxOptions()
-    options.set_window_rect = True # Full support in Firefox
-    driver = webdriver.Firefox(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
-
-def test_strict_file_interactability():
-    options = get_default_chrome_options()
-    options.strict_file_interactability = True
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
-
-def test_proxy():
-    options = get_default_chrome_options()
-    options.proxy = Proxy({ 'proxyType': ProxyType.MANUAL, 'httpProxy' : 'http.proxy:1234'})
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
-    
-def test_set_browser_name():
-    options = get_default_chrome_options()
-    assert options.capabilities['browserName'] == 'chrome'
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
-    
-def test_set_browser_version():
-    options = get_default_chrome_options()
-    options.browser_version = 'stable'
-    assert options.capabilities['browserVersion'] == 'stable'
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
-    
-def test_platform_name():
-    options = get_default_chrome_options()
-    options.platform_name = 'any'
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
-    
-def test_accept_insecure_certs():
-    options = get_default_chrome_options()
-    options.accept_insecure_certs = True
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.selenium.dev/")
-    driver.quit()
-
-def get_default_chrome_options():
-    options = webdriver.ChromeOptions()
-    options.add_argument("--no-sandbox")
-    return options
+# Close the browser
+driver.quit()
